@@ -1,0 +1,483 @@
+swagger: '2.0'
+
+info:
+    title: MiroTalk SFU API
+    description: API description for external applications that integrate with MiroTalk SFU.
+    version: 1.0.1
+
+basePath: /api/v1
+
+schemes:
+    - https
+    - http
+
+paths:
+    /login:
+        post:
+            tags:
+                - '/user'
+            summary: 'Post Login'
+            description: 'url: /api/user/login'
+            produces:
+                - 'application/json'
+            security:
+                - secretApiKey: []
+            parameters:
+                - in: body
+                  name: Login
+                  description: ورودی های لاگین
+                  schema:
+                      $ref: '#/definitions/LoginRequest'
+            responses:
+                '200':
+                    description: 'ورود با موفقیت انجام شد'
+                    schema:
+                        $ref: '#/definitions/LoginResponse'
+                '404':
+                    description: 'نام کاربری یا کلمه عبور اشتباه است'
+                '401':
+                    description: 'نام کاربری یا کلمه عبور اشتباه است'
+                '500':
+                    description: 'مشکلی از سمت سرور به وجود آمده است'
+    /register:
+        post:
+            tags:
+                - '/user'
+            summary: 'Post Register'
+            description: 'url: /api/user/register'
+            produces:
+                - 'application/json'
+            security:
+                - secretApiKey: []
+            parameters:
+                - in: body
+                  name: Register
+                  description: ورودی های ثبت نام کاربر
+                  schema:
+                      $ref: '#/definitions/RegisterRequest'
+            responses:
+                '201':
+                    description: 'message: عضویت با موفقیت انجام شد'
+                    # schema:
+                    #     $ref: '#/definitions/LoginResponse'
+                '422':
+                    description: 'message: کاربری با این یوزرنیم موجود است'
+                '500':
+                    description: 'message: مشکلی از سمت سرور به وجود آمده است'
+    /delete/UserId:
+        delete:
+            tags:
+                - '/user'
+            summary: 'Delete User'
+            description: 'url: /api/user/delete/UserId'
+            produces:
+                - 'application/json'
+            security:
+                - secretApiKey: []
+            responses:
+                '200':
+                    description: 'message: کاربر با موفقیت حذف شد'
+                    # schema:
+                    #     $ref: '#/definitions/LoginResponse'
+                '404':
+                    description: 'message: کاربری با این آیدی یافت نشد'
+                '500':
+                    description: 'message: مشکلی از سمت سرور به وجود آمده است'
+    /change-password/userId:
+        put:
+            tags:
+                - '/user'
+            summary: 'Change Password'
+            description: 'url: /api/user/change-password/userId'
+            produces:
+                - 'application/json'
+            security:
+                - secretApiKey: []
+            parameters:
+                - in: body
+                  name: New Password
+                  description: کلمه عبور جدید
+                  schema:
+                      $ref: '#/definitions/ChangeRequest'
+            responses:
+                '200':
+                    description: 'message: کلمه عبور با موفقیت تغییر کرد'
+                    # schema:
+                    #     $ref: '#/definitions/LoginResponse'
+                '404':
+                    description: 'message: کاربری با این آیدی یافت نشد'
+                '404':
+                    description: 'message: کلمه عبور قبلی صحیح نیست'
+                '500':
+                    description: 'message: مشکلی از سمت سرور به وجود آمده است'
+    /partners:
+        get:
+            tags:
+                - '/user'
+            summary: 'GET method- Getting your organizational partners To invite to the meeting'
+            description: 'url: /api/user/partners'
+            produces:
+                - 'application/json'
+            security:
+                - secretApiKey: []
+            responses:
+                '200':
+                    description: ''
+                    schema:
+                        $ref: '#/definitions/partnersResponse'
+                '404':
+                    description: 'شما همکار سازمانی ندارید'
+                # '401':
+                #     description: 'نام کاربری یا کلمه عبور اشتباه است'
+                '500':
+                    description: 'مشکلی از سمت سرور به وجود آمده است'
+    
+    /add:
+        post:
+            tags:
+                - '/meeting'
+            summary: 'Post method- create meeting'
+            description: 'url: /api/meeting/add'
+            produces:
+                - 'application/json'
+            security:
+                - secretApiKey: []
+            parameters:
+                - in: body
+                  name: Create Meeting
+                  description: ورودی های ساخت جلسه جدید
+                  schema:
+                      $ref: '#/definitions/craeteDidarRequest'
+            responses:
+                '200':
+                    description: 'جلسه با موفقیت ساخته شد'
+                #     schema:
+                #         $ref: '#/definitions/LoginResponse'
+                # '404':
+                #     description: 'نام کاربری یا کلمه عبور اشتباه است'
+                # '401':
+                #     description: 'نام کاربری یا کلمه عبور اشتباه است'
+                '500':
+                    description: 'مشکلی از سمت سرور به وجود آمده است'
+    /all:
+        get:
+            tags:
+                - '/meeting'
+            summary: 'GET method- Getting all of your meetings'
+            description: 'url: /api/meeting/all'
+            produces:
+                - 'application/json'
+            security:
+                - secretApiKey: []
+            responses:
+                '200':
+                    description: ''
+                    schema:
+                        $ref: '#/definitions/AllMeetingResponse'
+                # '404':
+                #     description: 'نام کاربری یا کلمه عبور اشتباه است'
+                # '401':
+                #     description: 'نام کاربری یا کلمه عبور اشتباه است'
+                '500':
+                    description: 'مشکلی از سمت سرور به وجود آمده است'
+    # /meetings:
+    #     get:
+    #         tags:
+    #             - 'meetings'
+    #         summary: 'Get meetings'
+    #         description: 'Get meetings'
+    #         produces:
+    #             - 'application/json'
+    #         security:
+    #             - secretApiKey: []
+    #         responses:
+    #             '200':
+    #                 description: 'Get Meetings done'
+    #                 schema:
+    #                     $ref: '#/definitions/MeetingsResponse'
+    #             '403':
+    #                 description: 'Unauthorized!'
+    # /meeting:
+    #     post:
+    #         tags:
+    #             - 'meeting'
+    #         summary: 'Create meeting'
+    #         description: 'Create meeting'
+    #         consumes:
+    #             - 'application/json'
+    #         produces:
+    #             - 'application/json'
+    #         security:
+    #             - secretApiKey: []
+    #         responses:
+    #             '200':
+    #                 description: 'Meeting created'
+    #                 schema:
+    #                     $ref: '#/definitions/MeetingResponse'
+    #             '403':
+    #                 description: 'Unauthorized!'
+    # /join:
+    #     post:
+    #         tags:
+    #             - 'join'
+    #         summary: 'Create direct join'
+    #         description: 'Create join'
+    #         parameters:
+    #             - in: body
+    #               name: Join
+    #               description: Custom Join URL.
+    #               schema:
+    #                   $ref: '#/definitions/JoinRequest'
+    #         consumes:
+    #             - 'application/json'
+    #         produces:
+    #             - 'application/json'
+    #         security:
+    #             - secretApiKey: []
+    #         responses:
+    #             '200':
+    #                 description: 'Direct join created'
+    #                 schema:
+    #                     $ref: '#/definitions/JoinResponse'
+    #             '403':
+    #                 description: 'Unauthorized!'
+    # /token:
+        # post:
+        #     tags:
+        #         - 'token'
+        #     summary: 'Get token'
+        #     description: 'Get token'
+        #     parameters:
+        #         - in: body
+        #           name: token
+        #           description: Custom Token.
+        #           schema:
+        #               $ref: '#/definitions/TokenRequest'
+        #     consumes:
+        #         - 'application/json'
+        #     produces:
+        #         - 'application/json'
+        #     security:
+        #         - secretApiKey: []
+        #     responses:
+        #         '200':
+                #     description: 'Get token done'
+                #     schema:
+                #         $ref: '#/definitions/TokenResponse'
+                # '403':
+                #     description: 'Unauthorized!'
+
+securityDefinitions:
+    secretApiKey:
+        type: 'apiKey'
+        name: 'authorization'
+        in: 'header'
+        description: 'Format like this: authorization: {API_KEY_SECRET}'
+
+definitions:
+    LoginResponse:
+        type: object
+        properties: 
+                token:
+                    type: string
+                    default: "token"
+                username:
+                    type: string
+                    default: "username"
+                fullname:
+                    type: string
+                    default: "fullname"
+                user_type:
+                    type: string
+                    default: ["admin", "supervisor", "normal", "security"]
+                organization_code:
+                    type: number
+                    default: 111
+                userId:
+                    type: string
+    LoginRequest:
+        type: object
+        properties:
+                username:
+                    type: string
+                    default: "username"                
+                password:
+                    type: string
+                    default: "1245"
+    RegisterRequest:
+        type: object
+        properties:
+            organization_code:
+                type: number
+                default: 111
+            user_type:
+                type: string
+                default: ["admin", "supervisor", "normal", "security"]
+            fullname:
+                type: string
+                default: "Ali Alavi"
+            username:
+                type: string
+                default: "username"
+            password:
+                type: string
+                default: "password"
+    craeteDidarRequest:
+        type: object
+        properties:               
+                name:
+                    type: string
+                    default: "نام جلسه"
+                invited:
+                    type: array
+                    default: "آرایه ای از یوزرنیم ها"
+                date:
+                    type: string
+                    default: "1403/04/22"
+                time:
+                    type: string
+                    default: "08:22"
+                description:
+                    type: string
+                    default: "توضیحات"
+                presenter:
+                    type: string
+                    default: "یوزرنیم شخصی که دارد جلسه را می‌سازد"
+    ChangeRequest:
+        type: object
+        properties:               
+                oldPassword:
+                    type: string
+                    default: "1245"
+                newPassword:
+                    type: string
+                    default: "124578"
+    AllMeetingResponse:
+        type: object
+        properties: 
+                _id:
+                    type: string
+                    default: "آیدی جلسه"
+                name:
+                    type: string
+                    default: "نام جلسه"
+                invited:
+                    type: array
+                    default: "آرایه ای از یوزرنیم ها"
+                date:
+                    type: string
+                    default: "1403/04/22"
+                time:
+                    type: string
+                    default: "08:22"
+                description:
+                    type: string
+                    default: "توضیحات"
+                presenter:
+                    type: string
+                    default: "یوزرنیم شخصی که جلسه را ساخته است"
+    partnersResponse:
+        type: object
+        properties: 
+                fullname:
+                    type: string
+                    default: "Ali Alavi"
+                username:
+                    type: string
+                    default: "username"
+        
+    # MeetingsResponse:
+    #     type: object
+    #     properties:
+    #         meetings:
+    #             type: array
+    #             items:
+    #                 $ref: '#/definitions/Meeting'
+    # MeetingResponse:
+    #     type: 'object'
+    #     properties:
+    #         meeting:
+    #             type: string
+    # JoinRequest:
+    #     type: object
+    #     properties:
+    #         room:
+    #             type: string
+    #             default: 'test'
+    #         roomPassword:
+    #             type: ['boolean', 'string'] # Allow boolean or string type
+    #             default: false
+    #         name:
+    #             type: string
+    #             default: 'mirotalksfu'
+    #         audio:
+    #             type: boolean
+    #             default: false
+    #         video:
+    #             type: boolean
+    #             default: false
+    #         screen:
+    #             type: boolean
+    #             default: false
+    #         hide:
+    #             type: boolean
+    #             default: false
+    #         notify:
+    #             type: boolean
+    #             default: false
+    #         token:
+    #             $ref: '#/definitions/TokenRequest'
+    # TokenRequest:
+    #     type: object
+    #     properties:
+    #         username:
+    #             type: string
+    #             default: 'username'
+    #         password:
+    #             type: string
+    #             default: 'password'
+    #         presenter:
+    #             type: boolean
+    #             default: true
+    #         expire:
+    #             type: string
+    #             default: '1h'
+    # JoinResponse:
+    #     type: 'object'
+    #     properties:
+    #         join:
+    #             type: string
+    # TokenResponse:
+    #     type: 'object'
+    #     properties:
+    #         token:
+    #             type: string
+    # Peer:
+    #     type: object
+    #     properties:
+    #         name:
+    #             type: string
+    #         presenter:
+    #             type: boolean
+    #         video:
+    #             type: boolean
+    #         audio:
+    #             type: boolean
+    #         screen:
+    #             type: boolean
+    #         hand:
+    #             type: boolean
+    #         os:
+    #             type: string
+    #         browser:
+    #             type: string
+
+    # Meeting:
+    #     type: object
+    #     properties:
+    #         roomId:
+    #             type: string
+    #         peers:
+    #             type: array
+    #             items:
+    #                 $ref: '#/definitions/Peer'
